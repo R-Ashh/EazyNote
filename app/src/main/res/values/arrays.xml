@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="drawer_item"/>
+    <array name="Setting"/>
+    <array name="About"/>
+    <array name="Contact"/>
+
+</resources>
