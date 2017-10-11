@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
         FloatingActionButton fbutton = (FloatingActionButton) findViewById(R.id.create_note);
         fbutton.setOnClickListener(this);
         requestPermission();
@@ -72,22 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initNotes() {
         datasource = new NoteDataSource(this);
         notesList = datasource.findAll();
-        if (notesList.size() > 0) {
-            Toast.makeText(this, "you have " + notesList.size() + " notes", Toast.LENGTH_SHORT).show();
-            NoteItem item = notesList.get(0);
-            item.setText("Kasra is faheshe");
-            datasource.update(item);
-        } else {
-            Toast.makeText(this, "There is no note fuckface", Toast.LENGTH_SHORT).show();
-            datasource.add(NoteItem.getNew());
-        }
-        Log.d("CURRENT", "initNotes() returned: " + new Gson().toJson(notesList));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
 
@@ -97,16 +84,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         util.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, this, new PermissionUtility.CallBack() {
             @Override
             public void onGranted() {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    Toast.makeText(MainActivity.this, "Permission Granted.", Toast.LENGTH_SHORT).show();
-                }
             }
-
             @Override
             public void onNotGranted() {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    Toast.makeText(MainActivity.this, "Permission Denied.", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
