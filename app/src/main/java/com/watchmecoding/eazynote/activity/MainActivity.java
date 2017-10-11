@@ -2,27 +2,24 @@ package com.watchmecoding.eazynote.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.watchmecoding.eazynote.R;
 import com.watchmecoding.eazynote.base.PermissionUtility;
 import com.watchmecoding.eazynote.data.NoteDataSource;
 import com.watchmecoding.eazynote.data.NoteItem;
+
 import java.util.ArrayList;
 
 
@@ -48,30 +45,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fetch();
         noteEdit();
     }
+
     private void noteEdit() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 NoteItem note = notesList.get(position);
-                Intent intent = new Intent(MainActivity.this, NoteEditorActivity.class);
-                intent.putExtra("key", note.getKey());
-                intent.putExtra("text", note.getText());
-                startActivity(intent);
+                openNote(note);
             }
         });
 
-}
+    }
 
     private void fetch() {
         listView = (ListView) findViewById(R.id.list);
         adapter =
-                new ArrayAdapter<NoteItem>(this, R.layout.list_item_layout, notesList);
+                new ArrayAdapter<>(this, R.layout.list_item_layout, notesList);
         listView.setAdapter(adapter);
     }
 
     private void refreshDisplay() {
-        if (adapter != null && notesList != null)
+        if (adapter != null && notesList != null) {
+            notesList.clear();
+            notesList.addAll(datasource.findAll());
             adapter.notifyDataSetChanged();
+        }
     }
 
     private void initNotes() {
@@ -87,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onGranted() {
             }
+
             @Override
             public void onNotGranted() {
             }
@@ -102,26 +101,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.create_note:
-                NoteItem note = NoteItem.getNew();
-                Intent intent = new Intent(this, NoteEditorActivity.class);
-                intent.putExtra("key", note.getKey());
-                intent.putExtra("text", note.getText());
-                startActivityForResult(intent, EDITOR_ACTIVITY_REQUEST);
+                addNote();
                 break;
             default:
                 break;
         }
     }
 
+    private void addNote() {
+        Intent intent = new Intent(this, NoteEditorActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivityForResult(intent, EDITOR_ACTIVITY_REQUEST);
+    }
+
+    private void openNote(NoteItem item) {
+        Intent intent = new Intent(this, NoteEditorActivity.class);
+        intent.setAction(new Gson().toJson(item));
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivityForResult(intent, EDITOR_ACTIVITY_REQUEST);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EDITOR_ACTIVITY_REQUEST && resultCode == RESULT_OK) {
-            NoteItem note = new NoteItem();
-            note.setKey(data.getStringExtra("key"));
-            note.setText(data.getStringExtra("text"));
-            datasource.update(note);
             refreshDisplay();
         }
     }

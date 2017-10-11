@@ -8,10 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.google.gson.Gson;
 import com.watchmecoding.eazynote.R;
+import com.watchmecoding.eazynote.data.NoteDataSource;
 import com.watchmecoding.eazynote.data.NoteItem;
 
 
@@ -24,31 +27,44 @@ public class NoteEditorActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_editor);
 
-        ImageButton imgbt = (ImageButton) findViewById(R.id.save_button);
-        imgbt.setOnClickListener(this);
+        Button bt = (Button) findViewById(R.id.save_button);
+        bt.setOnClickListener(this);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
-        Intent intent = this.getIntent();
-        note = new NoteItem();
-        note.setKey(intent.getStringExtra("key"));
-        note.setText(intent.getStringExtra("text"));
+        String json = getIntent().getAction();
+        if(json != null){
+            note = new Gson().fromJson(json,NoteItem.class);
+            EditText et = (EditText) findViewById(R.id.noteText);
+            et.setText(note.getText());
+            et.setSelection(note.getText().length());
+        }
 
-        EditText et = (EditText) findViewById(R.id.noteText);
-        et.setText(note.getText());
-        et.setSelection(note.getText().length());
     }
 
     private void saveAndFinish() {
         EditText et = (EditText) findViewById(R.id.noteText);
         String noteText = et.getText().toString();
-        Intent intent = new Intent();
-        intent.putExtra("key", note.getKey());
-        intent.putExtra("text", noteText);
-        setResult(RESULT_OK, intent);
+        NoteDataSource dataSource = new NoteDataSource(this);
+
+        if(note == null){
+//            add from fab
+            NoteItem item = NoteItem.getNew();
+            item.setText(noteText);
+            dataSource.add(item);
+
+        }else {
+//            on note click
+            note.setText(noteText);
+            dataSource.update(note);
+        }
+
+        setResult(RESULT_OK);
         finish();
     }
 
