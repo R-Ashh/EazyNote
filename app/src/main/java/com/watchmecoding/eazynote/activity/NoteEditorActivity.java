@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,7 +15,7 @@ import com.watchmecoding.eazynote.R;
 import com.watchmecoding.eazynote.data.NoteItem;
 
 
-public class NoteEditorActivity extends AppCompatActivity {
+public class NoteEditorActivity extends AppCompatActivity implements View.OnClickListener {
 
     private NoteItem note;
 
@@ -22,13 +23,9 @@ public class NoteEditorActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_editor);
+
         ImageButton imgbt = (ImageButton) findViewById(R.id.save_button);
-        imgbt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            saveAndFinish();
-            }
-        });
+        imgbt.setOnClickListener(this);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(myToolbar);
@@ -53,5 +50,29 @@ public class NoteEditorActivity extends AppCompatActivity {
         intent.putExtra("text", noteText);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.save_button:
+                saveAndFinish();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            saveAndFinish();
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        saveAndFinish();
     }
 }

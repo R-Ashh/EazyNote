@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static final int EDITOR_ACTIVITY_REQUEST = 1001;
     private PermissionUtility util;
     private NoteDataSource datasource;
     ArrayList<NoteItem> notesList;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listView.setAdapter(adapter);
     }
 
-    private void refresh() {
+    private void refreshDisplay() {
         if (adapter != null && notesList != null)
             adapter.notifyDataSetChanged();
     }
@@ -100,11 +101,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        NoteItem note = NoteItem.getNew();
-        Intent intent = new Intent(this, NoteEditorActivity.class);
-        intent.putExtra("key", note.getKey());
-        intent.putExtra("text", note.getText());
-        startActivityForResult(intent, 1001);
+        switch (v.getId()){
+            case R.id.create_note:
+                NoteItem note = NoteItem.getNew();
+                Intent intent = new Intent(this, NoteEditorActivity.class);
+                intent.putExtra("key", note.getKey());
+                intent.putExtra("text", note.getText());
+                startActivityForResult(intent, EDITOR_ACTIVITY_REQUEST);
+                break;
+            default:
+                break;
+        }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDITOR_ACTIVITY_REQUEST && resultCode == RESULT_OK) {
+            NoteItem note = new NoteItem();
+            note.setKey(data.getStringExtra("key"));
+            note.setText(data.getStringExtra("text"));
+            datasource.update(note);
+            refreshDisplay();
+        }
+    }
 }
