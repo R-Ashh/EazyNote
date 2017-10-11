@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             note.setText(data.getStringExtra("text"));
             datasource.update(note);
             refreshDisplay();
+
         }
     }
 }
