@@ -1,6 +1,5 @@
 package com.watchmecoding.eazynote.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -10,8 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-
 import com.google.gson.Gson;
 import com.watchmecoding.eazynote.R;
 import com.watchmecoding.eazynote.data.NoteDataSource;

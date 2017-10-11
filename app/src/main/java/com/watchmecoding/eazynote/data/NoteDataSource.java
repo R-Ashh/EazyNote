@@ -4,9 +4,7 @@ package com.watchmecoding.eazynote.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
