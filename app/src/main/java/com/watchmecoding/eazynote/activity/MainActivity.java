@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        FloatingActionButton fbutton = (FloatingActionButton) findViewById(R.id.create_note);
+        final FloatingActionButton fbutton = (FloatingActionButton) findViewById(R.id.create_note);
         fbutton.setOnClickListener(this);
         requestPermission();
         initNotes();

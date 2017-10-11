@@ -2,13 +2,13 @@ package com.watchmecoding.eazynote.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.watchmecoding.eazynote.R;
 import com.watchmecoding.eazynote.data.NoteItem;
@@ -22,6 +22,13 @@ public class NoteEditorActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_editor);
+        ImageButton imgbt = (ImageButton) findViewById(R.id.save_button);
+        imgbt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            saveAndFinish();
+            }
+        });
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(myToolbar);
