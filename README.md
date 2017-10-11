@@ -1,0 +1,2 @@
+# eazynote
+Simple Notepad
