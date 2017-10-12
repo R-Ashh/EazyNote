@@ -31,6 +31,8 @@ public class NoteEditorActivity extends AppCompatActivity implements View.OnClic
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("");
 
         String json = getIntent().getAction();
         if (json != null) {
