@@ -1,7 +1,6 @@
 package com.watchmecoding.eazynote.activity;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
@@ -12,8 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ContextMenu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -31,7 +28,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final int EDITOR_ACTIVITY_REQUEST = 1001;
-    private int currentNoteId;
     private PermissionUtility util;
     private NoteDataSource datasource;
     ArrayList<NoteItem> notesList;
@@ -61,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch (which){
+                switch (which) {
                     case 0:
                         openNote(item);
                         break;
