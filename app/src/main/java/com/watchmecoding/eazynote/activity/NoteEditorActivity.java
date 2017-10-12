@@ -1,5 +1,6 @@
 package com.watchmecoding.eazynote.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
 import com.google.gson.Gson;
 import com.watchmecoding.eazynote.R;
 import com.watchmecoding.eazynote.data.NoteDataSource;
@@ -29,14 +31,10 @@ public class NoteEditorActivity extends AppCompatActivity implements View.OnClic
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.app_toolbar);
         setSupportActionBar(myToolbar);
-        ActionBar ab = getSupportActionBar();
-        if (ab != null) {
-            ab.setDisplayHomeAsUpEnabled(true);
-        }
 
         String json = getIntent().getAction();
-        if(json != null){
-            note = new Gson().fromJson(json,NoteItem.class);
+        if (json != null) {
+            note = new Gson().fromJson(json, NoteItem.class);
             EditText et = (EditText) findViewById(R.id.noteText);
             et.setText(note.getText());
             et.setSelection(note.getText().length());
@@ -49,13 +47,19 @@ public class NoteEditorActivity extends AppCompatActivity implements View.OnClic
         String noteText = et.getText().toString();
         NoteDataSource dataSource = new NoteDataSource(this);
 
-        if(note == null){
+        if (noteText.length() == 0) {
+            setResult(RESULT_OK);
+            finish();
+            return;
+        }
+
+        if (note == null) {
 //            add from fab
             NoteItem item = NoteItem.getNew();
             item.setText(noteText);
             dataSource.add(item);
 
-        }else {
+        } else {
 //            on note click
             note.setText(noteText);
             dataSource.update(note);
@@ -67,7 +71,7 @@ public class NoteEditorActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.save_button:
                 saveAndFinish();
                 break;

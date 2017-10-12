@@ -1,14 +1,19 @@
 package com.watchmecoding.eazynote.activity;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,11 +31,13 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final int EDITOR_ACTIVITY_REQUEST = 1001;
+    private int currentNoteId;
     private PermissionUtility util;
     private NoteDataSource datasource;
     ArrayList<NoteItem> notesList;
     private ListView listView;
     private ArrayAdapter<NoteItem> adapter;
+    CharSequence options[] = new CharSequence[]{"Open", "Delete", "Detail", "Share"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,12 +45,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
         final FloatingActionButton fbutton = (FloatingActionButton) findViewById(R.id.create_note);
         fbutton.setOnClickListener(this);
+
         requestPermission();
         initNotes();
         fetch();
         noteEdit();
+    }
+
+    private void holdForOption(final NoteItem item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("What Do You Wanna Do?");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case 0:
+                        openNote(item);
+                        break;
+                    case 1:
+                        removeNote(item);
+                        break;
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void removeNote(NoteItem item) {
+        datasource.remove(item);
+        refreshDisplay();
     }
 
     private void noteEdit() {
@@ -54,7 +87,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 openNote(note);
             }
         });
-
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                NoteItem note = notesList.get(position);
+                holdForOption(note);
+                return true;
+            }
+        });
     }
 
     private void fetch() {
@@ -129,4 +169,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             refreshDisplay();
         }
     }
+
 }

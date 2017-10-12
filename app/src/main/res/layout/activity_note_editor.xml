@@ -33,7 +33,7 @@
             android:background="@drawable/ic_action_save"
             android:clickable="true"
             android:elevation="8dp"
-            android:gravity="right"/>
+            android:gravity="start" />
 
     </android.support.v7.widget.Toolbar>
 
