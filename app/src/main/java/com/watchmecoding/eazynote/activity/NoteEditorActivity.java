@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.watchmecoding.eazynote.R;
@@ -21,7 +20,6 @@ import com.watchmecoding.eazynote.data.NoteItem;
 public class NoteEditorActivity extends AppCompatActivity implements View.OnClickListener {
 
     private NoteItem note;
-    private NoteDataSource datasource;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -105,7 +103,7 @@ public class NoteEditorActivity extends AppCompatActivity implements View.OnClic
                 saveAndFinish();
                 break;
             case R.id.delete_button:
-            deleteButtonClicked(note);
+                deleteButtonClicked(note);
             default:
                 break;
         }

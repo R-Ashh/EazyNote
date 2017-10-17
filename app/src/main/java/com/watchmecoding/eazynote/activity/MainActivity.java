@@ -15,12 +15,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.watchmecoding.eazynote.R;
 import com.watchmecoding.eazynote.base.PermissionUtility;
 import com.watchmecoding.eazynote.data.NoteDataSource;
 import com.watchmecoding.eazynote.data.NoteItem;
+import com.watchmecoding.eazynote.util.NetworkHelper;
 
 import java.util.ArrayList;
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView listView;
     private ArrayAdapter<NoteItem> adapter;
     CharSequence options[] = new CharSequence[]{"Open", "Delete", "Detail", "Share"};
+    private boolean networkOk;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +52,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initNotes();
         fetch();
         noteEdit();
+        checkInternet();
+//        networkOk = NetworkHelper.hasNetworkAccess(this)
+
+    }
+
+    private void checkInternet() {
+        if (networkOk = NetworkHelper.hasNetworkAccess(this)) {
+            Toast.makeText(this, "Internet is Connected", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "You're offline", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void holdForOption(final NoteItem item) {
