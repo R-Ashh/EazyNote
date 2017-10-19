@@ -2,7 +2,6 @@ package com.watchmecoding.eazynote.base;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.pm.LauncherApps;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;

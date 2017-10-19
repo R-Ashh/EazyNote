@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fetch();
         noteEdit();
         checkInternet();
-//        networkOk = NetworkHelper.hasNetworkAccess(this)
-
     }
 
     private void checkInternet() {

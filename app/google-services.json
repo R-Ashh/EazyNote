@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "647242422665",
+    "firebase_url": "https://eazy-note-bc2bd.firebaseio.com",
+    "project_id": "eazy-note-bc2bd",
+    "storage_bucket": "eazy-note-bc2bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647242422665:android:e62b90194e3ae931",
+        "android_client_info": {
+          "package_name": "com.watchmecoding.eazynote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647242422665-sufa1rt5pd9nk4f9l0qnbh8orpjb64ko.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.watchmecoding.eazynote",
+            "certificate_hash": "00dd5ce30f377bf5a19bf1c286d44d0108d5ee28"
+          }
+        },
+        {
+          "client_id": "647242422665-g1533evukokv5q28fgl7c8dak08if54n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDudhYv81UoxpQETFZTjqoPFgtOgs5Ot84"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647242422665-g1533evukokv5q28fgl7c8dak08if54n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
