@@ -10,15 +10,15 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.watchmecoding.eazynote.R;
+import com.watchmecoding.eazynote.adapters.RecyclerAdapter;
 import com.watchmecoding.eazynote.base.PermissionUtility;
 import com.watchmecoding.eazynote.data.NoteDataSource;
 import com.watchmecoding.eazynote.data.NoteItem;
@@ -32,9 +32,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final int EDITOR_ACTIVITY_REQUEST = 1001;
     private PermissionUtility util;
     private NoteDataSource datasource;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
     ArrayList<NoteItem> notesList;
-    private ListView listView;
-    private ArrayAdapter<NoteItem> adapter;
     CharSequence options[] = new CharSequence[]{"Open", "Delete", "Detail", "Share"};
     private boolean networkOk;
 
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void holdForOption(final NoteItem item) {
+    public void holdForOption(final NoteItem item) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("What Do You Wanna Do?");
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -82,41 +83,66 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.show();
     }
 
-    private void removeNote(NoteItem item) {
-        datasource.remove(item);
-        refreshDisplay();
+    private void removeNote(final NoteItem item) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Are you sure you want to delete this note?");
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                NoteDataSource dataSource = new NoteDataSource(MainActivity.this);
+                datasource.remove(item);
+                refreshDisplay();
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void noteEdit() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                NoteItem note = notesList.get(position);
-                openNote(note);
-            }
-        });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                NoteItem note = notesList.get(position);
-                holdForOption(note);
-                return true;
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                NoteItem note = notesList.get(position);
+//                openNote(note);
+//            }
+//        });
+//        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                NoteItem note = notesList.get(position);
+//                holdForOption(note);
+//                return true;
+//            }
+//        });
     }
 
     private void fetch() {
-        listView = (ListView) findViewById(R.id.list);
-        adapter =
-                new ArrayAdapter<>(this, R.layout.list_item_layout, notesList);
-        listView.setAdapter(adapter);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.list);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new RecyclerAdapter(notesList, this);
+        mRecyclerView.setAdapter(mAdapter);
+//        listView = (ListView) findViewById(R.id.list);
+//        adapter =
+//                new ArrayAdapter<>(this, R.layout.list_item_layout, notesList);
+//        listView.setAdapter(adapter);
     }
 
     private void refreshDisplay() {
-        if (adapter != null && notesList != null) {
+        if (mAdapter != null && notesList != null) {
             notesList.clear();
             notesList.addAll(datasource.findAll());
-            adapter.notifyDataSetChanged();
+            mAdapter.notifyDataSetChanged();
         }
     }
 
@@ -164,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivityForResult(intent, EDITOR_ACTIVITY_REQUEST);
     }
 
-    private void openNote(NoteItem item) {
+    public void openNote(NoteItem item) {
         Intent intent = new Intent(this, NoteEditorActivity.class);
         intent.setAction(new Gson().toJson(item));
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
