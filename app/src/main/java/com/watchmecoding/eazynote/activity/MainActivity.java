@@ -8,12 +8,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<NoteItem> notesList;
     CharSequence options[] = new CharSequence[]{"Open", "Delete", "Detail", "Share"};
     private boolean networkOk;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,15 +51,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-
         final FloatingActionButton fbutton = (FloatingActionButton) findViewById(R.id.create_note);
         fbutton.setOnClickListener(this);
 
+        appDrawer();
         requestPermission();
         initNotes();
         fetch();
-        noteEdit();
         checkInternet();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void appDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     private void checkInternet() {
@@ -90,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                NoteDataSource dataSource = new NoteDataSource(MainActivity.this);
                 datasource.remove(item);
                 refreshDisplay();
             }
@@ -106,24 +127,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.show();
     }
 
-    private void noteEdit() {
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                NoteItem note = notesList.get(position);
-//                openNote(note);
-//            }
-//        });
-//        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                NoteItem note = notesList.get(position);
-//                holdForOption(note);
-//                return true;
-//            }
-//        });
-    }
-
     private void fetch() {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
@@ -132,10 +135,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new RecyclerAdapter(notesList, this);
         mRecyclerView.setAdapter(mAdapter);
-//        listView = (ListView) findViewById(R.id.list);
-//        adapter =
-//                new ArrayAdapter<>(this, R.layout.list_item_layout, notesList);
-//        listView.setAdapter(adapter);
     }
 
     private void refreshDisplay() {
@@ -183,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
 
     private void addNote() {
         Intent intent = new Intent(this, NoteEditorActivity.class);

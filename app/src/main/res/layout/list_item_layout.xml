@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="40dp"
     android:gravity="center_vertical"
     android:padding="5dp"
     android:maxLines="1"
-    android:textSize="20sp"
+    android:textSize="20dp"
+    android:background="@color/textBackground"
     android:ellipsize="marquee"
     android:drawableRight="@drawable/ic_action_edit">
 

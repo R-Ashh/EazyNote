@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/login_item"
+        android:icon="@drawable/ic_vpn_key_black_36dp"
+        android:title="Sign In" />
+
+    <item
+        android:id="@+id/settings_item"
+        android:icon="@drawable/ic_settings_black_36dp"
+        android:title="Settings" />
+
+    <item
+        android:id="@+id/account"
+        android:icon="@drawable/ic_perm_identity_black_36dp"
+        android:title="Account" />
+
+    <item
+        android:id="@+id/contactUs_item"
+        android:icon="@drawable/ic_email_black_36dp"
+        android:title="Contact Us" />
+
+    <item
+        android:id="@+id/donate_item"
+        android:icon="@drawable/ic_euro_symbol_black_36dp"
+        android:title="Donate" />
+
+</menu>

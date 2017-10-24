@@ -2,4 +2,6 @@
     <string name="app_name">EazyNote</string>
     <string name="setting">Setting</string>
     <string name="settings">Settings</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
