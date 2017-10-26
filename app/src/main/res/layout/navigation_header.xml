@@ -27,7 +27,7 @@
         android:textSize="15dp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/signIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="18dp"
@@ -35,6 +35,7 @@
         android:layout_marginTop="17dp"
         android:textColor="@color/white"
         android:text="Sign In"
+        android:onClick="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

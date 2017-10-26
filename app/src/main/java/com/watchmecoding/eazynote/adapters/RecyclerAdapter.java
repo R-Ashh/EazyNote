@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     ArrayList<NoteItem> notesList;
 
+
     private MainActivity context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -35,7 +36,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_layout, parent, false);
+                .inflate(R.layout.list_item_layout, parent,  false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
 

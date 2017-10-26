@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -17,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     ArrayList<NoteItem> notesList;
-    CharSequence options[] = new CharSequence[]{"Open", "Delete", "Detail", "Share"};
+    CharSequence options[] = new CharSequence[]{"Edit", "Delete", "Detail", "Share"};
     private boolean networkOk;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
@@ -54,12 +54,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final FloatingActionButton fbutton = (FloatingActionButton) findViewById(R.id.create_note);
         fbutton.setOnClickListener(this);
 
+        NavigationView mNavigationView = (NavigationView) findViewById(R.id.nav_menu);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case (R.id.login_item):
+                        //do this
+                        break;
+                    case (R.id.settings_item):
+                        Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+                        startActivity(intent);
+                        break;
+                    case (R.id.account):
+                        //do this
+                        break;
+                    case (R.id.contactUs_item):
+                        //do this
+                        break;
+                    case (R.id.donate_item):
+                        //do this
+                        break;
+                    case (R.id.signIn):
+                        //do this
+                        break;
+                }
+                return true;
+            }
+        });
+
         appDrawer();
         requestPermission();
         initNotes();
         fetch();
         checkInternet();
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

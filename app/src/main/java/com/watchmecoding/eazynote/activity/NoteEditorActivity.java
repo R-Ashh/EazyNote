@@ -42,6 +42,9 @@ public class NoteEditorActivity extends AppCompatActivity implements View.OnClic
             EditText et = (EditText) findViewById(R.id.noteText);
             et.setText(note.getText());
             et.setSelection(note.getText().length());
+            EditText tt = (EditText) findViewById(R.id.titleBar);
+            tt.setText(note.getTitle());
+            tt.setSelection(note.getTitle().length());
         }
     }
 
@@ -71,9 +74,11 @@ public class NoteEditorActivity extends AppCompatActivity implements View.OnClic
     private void saveAndFinish() {
         EditText et = (EditText) findViewById(R.id.noteText);
         String noteText = et.getText().toString();
+        EditText tt = (EditText) findViewById(R.id.titleBar);
+        String titleText = tt.getText().toString();
         NoteDataSource dataSource = new NoteDataSource(this);
 
-        if (noteText.length() == 0) {
+        if (noteText.length() == 0 && titleText.length() == 0) {
             setResult(RESULT_OK);
             finish();
             return;
@@ -82,12 +87,14 @@ public class NoteEditorActivity extends AppCompatActivity implements View.OnClic
         if (note == null) {
 //            add from fab
             NoteItem item = NoteItem.getNew();
+            note.setTitle(titleText);
             item.setText(noteText);
             dataSource.add(item);
 
         } else {
 //            on note click
             note.setText(noteText);
+            note.setTitle(titleText);
             dataSource.update(note);
         }
 

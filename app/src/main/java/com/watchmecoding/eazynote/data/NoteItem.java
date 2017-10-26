@@ -6,6 +6,16 @@ public class NoteItem {
 
     private String key;
     private String text;
+    private String title;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 
     public String getKey() {
         return key;
@@ -27,6 +37,7 @@ public class NoteItem {
         NoteItem note = new NoteItem();
         note.setKey(String.valueOf(Calendar.getInstance().getTimeInMillis()));
         note.setText("");
+        note.setTitle("");
         return note;
     }
 
